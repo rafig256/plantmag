@@ -5,8 +5,18 @@
     "description": "The skeleton application for the Laravel framework.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
+    "repositories": [
+    {
+        "type": "composer",
+        "url": "https://mirror-composer.runflare.com"
+    },
+    {
+        "packagist.org": false
+    }
+    ],
     "require": {
         "php": "^8.2",
+        "filament/filament": "^5.6",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1"
     },
