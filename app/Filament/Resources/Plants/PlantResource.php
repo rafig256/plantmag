@@ -18,9 +18,15 @@ class PlantResource extends Resource
 {
     protected static ?string $model = Plant::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-archive-box';
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?string $navigationLabel = 'گیاهان';
+
+    protected static ?string $modelLabel = 'گیاه';
+
+    protected static ?string $pluralModelLabel = 'گیاهان';
 
     public static function form(Schema $schema): Schema
     {
