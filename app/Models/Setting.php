@@ -13,17 +13,20 @@ class Setting extends Model
         'value' => 'json', // برای ذخیره انواع داده
     ];
 
-    // کش کردن برای کاهش کوئری
-    public static function getCached($key, $default = null)
+     public static function getCached($key = null, $default = null)
     {
         $settings = Cache::remember('settings', 3600, function () {
             return self::all()->pluck('value', 'key')->toArray();
         });
 
+        if ($key === null) {
+            return $settings;
+        }
+
         return $settings[$key] ?? $default;
     }
 
-    // clear cache بعد از هر تغییر
+    // پاک کردن کش بعد از هر تغییر
     public static function boot()
     {
         parent::boot();

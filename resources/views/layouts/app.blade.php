@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'گلفروشی پاساژ')</title>
+    <title>@yield('title', $settings['site_name'] ?? 'گلفروشی پاساژ')</title>
     
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -31,14 +31,14 @@
     @stack('styles')
 </head>
 <body>
-    <!-- منو -->
+    <!-- ==================== منو ==================== -->
     <nav class="bg-white shadow-lg sticky top-0 z-50 border-b-2 border-green-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <span class="text-2xl font-bold text-green-700">🌿</span>
-                    <span class="text-xl font-bold text-gray-800 mr-2">گلفروشی</span>
-                    <span class="text-sm text-gray-500 hidden sm:inline">| انواع گیاهان آپارتمانی و فضای باز</span>
+                    <span class="text-xl font-bold text-gray-800 mr-2">{{ $settings['shop_name'] ?? 'گلفروشی' }}</span>
+                    <span class="text-sm text-gray-500 hidden sm:inline">| {{ $settings['site_description'] ?? 'انواع گیاهان آپارتمانی و فضای باز' }}</span>
                 </div>
                 <div class="hidden md:flex items-center space-x-8 space-x-reverse">
                     <a href="{{ route('home') }}" class="text-green-700 border-b-2 border-green-700 pb-1 font-medium">صفحه اصلی</a>
@@ -56,7 +56,7 @@
         </div>
         <div id="mobileMenu" class="mobile-menu md:hidden bg-white border-t-2 border-green-100 shadow-lg">
             <div class="px-4 py-3 space-y-3">
-                <a href="#" class="block text-green-700 font-bold py-2 border-b border-gray-100">
+                <a href="{{ route('home') }}" class="block text-green-700 font-bold py-2 border-b border-gray-100">
                     <i class="fas fa-home ml-2"></i>صفحه اصلی
                 </a>
                 <a href="#" class="block text-gray-600 hover:text-green-700 py-2 border-b border-gray-100">
@@ -75,18 +75,24 @@
         </div>
     </nav>
 
-    <!-- محتوای اصلی -->
+    <!-- ==================== محتوای اصلی ==================== -->
     <main class="min-h-screen bg-gradient-to-b from-green-50 to-white py-8">
         @yield('content')
     </main>
 
-    <!-- فوتر -->
+    <!-- ==================== فوتر (داینامیک) ==================== -->
     <footer class="bg-green-700 text-white text-center py-4 px-2 text-sm">
-        <p>🌱 گلفروشی پاساژ - همه‌ی گیاهان با بهترین کیفیت</p>
-        <p class="text-green-300 text-xs mt-1">تلفن: ۰۲۱-۱۲۳۴۵۶۷۸ | آدرس: مشگین شهر، خیابان امام، پاساژ جواهری</p>
+        <p>🌱 {{ $settings['shop_name'] ?? 'گلفروشی' }} - {{ $settings['footer_text'] ?? 'همه‌ی گیاهان با بهترین کیفیت' }}</p>
+        <p class="text-green-300 text-xs mt-1">
+            تلفن: {{ $settings['phone'] ?? '۰۲۱-۱۲۳۴۵۶۷۸' }} | 
+            آدرس: {{ $settings['address'] ?? 'مشگین شهر، خیابان امام، پاساژ جواهری' }}
+        </p>
+        @if($settings['copyright_text'] ?? false)
+            <p class="text-green-200 text-xs mt-1">{{ $settings['copyright_text'] }}</p>
+        @endif
     </footer>
 
-    <!-- اسکریپت منو -->
+    <!-- ==================== اسکریپت منو ==================== -->
     <script>
         document.getElementById('menuToggle').addEventListener('click', function() {
             const menu = document.getElementById('mobileMenu');
