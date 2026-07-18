@@ -1,0 +1,30 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use App\Models\Setting;
+
+class SettingsSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run()
+    {
+        $settings = [
+            ['key' => 'site_name', 'value' => 'سایت گلفروشی یاس', 'type' => 'string', 'group' => 'general', 'label' => 'نام سایت'],
+            ['key' => 'shop_name', 'value' => 'گلفروشی یاس', 'type' => 'string', 'group' => 'general', 'label' => 'نام گلفروشی'],
+            ['key' => 'phone', 'value' => '۰۲۱-۱۲۳۴۵۶۷۸', 'type' => 'string', 'group' => 'contact', 'label' => 'تلفن'],
+            ['key' => 'address', 'value' => 'مشگین شهر، خیابان امام، پاساژ جواهری', 'type' => 'string', 'group' => 'contact', 'label' => 'آدرس'],
+            ['key' => 'currency', 'value' => 'تومان', 'type' => 'string', 'group' => 'general', 'label' => 'واحد پول'],
+            ['key' => 'meta_description', 'value' => 'فروشگاه تخصصی گیاهان آپارتمانی', 'type' => 'string', 'group' => 'seo', 'label' => 'توضیحات متا'],
+            ['key' => 'footer_text', 'value' => 'همه‌ی گیاهان با بهترین کیفیت', 'type' => 'string', 'group' => 'general', 'label' => 'متن فوتر'],
+        ];
+
+        foreach ($settings as $setting) {
+            Setting::create($setting);
+        }
+    }
+}

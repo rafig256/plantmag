@@ -6,6 +6,10 @@ use Illuminate\Support\ServiceProvider;
 use Carbon\Carbon;
 use Filament\Support\Assets\Css;
 use Filament\Support\Facades\FilamentAsset;
+use Illuminate\Support\Facades\View;
+use App\Models\Setting;
+
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,5 +30,9 @@ class AppServiceProvider extends ServiceProvider
         FilamentAsset::register([
             Css::make('sahel-font', asset('css/filament-theme.css')),
         ]);
+        View::composer('*', function ($view) {
+            $settings = Setting::getCached(null);
+            $view->with('settings', $settings);
+        });
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Plant;
+use App\Models\Setting;
 
 class PlantController extends Controller
 {
@@ -21,10 +22,11 @@ class PlantController extends Controller
         $plant = Plant::where('slug', $slug)
             ->where('is_available', true)
             ->firstOrFail();
+        $currency = Setting::where('key', 'currency')->first()->value ?? 'تومان';
 
         // افزایش تعداد بازدید
         $plant->increment('views_count');
 
-        return view('plants.show', compact('plant'));
+        return view('plants.show', compact('plant','currency'));
     }
 }

@@ -55,7 +55,7 @@
                             از {{ number_format($plant->min_price) }}
                         </span>
                     @endif
-                    <span class="text-lg text-gray-600">تومان</span>
+                    <span class="text-lg text-gray-600">{{ $currency }}</span>
                 </div>
                 <span class="bg-green-100 text-green-800 text-sm px-4 py-1.5 rounded-full font-bold">
                     {{ $plant->is_available ? '✅ موجود' : '❌ ناموجود' }}
