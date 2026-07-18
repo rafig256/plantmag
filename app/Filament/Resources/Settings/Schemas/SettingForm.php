@@ -13,7 +13,8 @@ class SettingForm
         return $schema
             ->components([
                 TextInput::make('key')
-                    ->required(),
+                    ->required()
+                    ->disabled(),
                 Textarea::make('value')
                     ->default(null)
                     ->columnSpanFull(),
@@ -22,7 +23,8 @@ class SettingForm
                     ->default('string'),
                 TextInput::make('group')
                     ->required()
-                    ->default('general'),
+                    ->default('general')
+                    ->disabled(),
                 TextInput::make('label')
                     ->default(null),
             ]);

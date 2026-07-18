@@ -18,9 +18,22 @@ class SettingResource extends Resource
 {
     protected static ?string $model = Setting::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    // عنوان نمایش داده شده در منو
+    protected static ?string $navigationLabel = 'تنظیمات';
+    
+    // عنوان در صفحه لیست
+    protected static ?string $label = 'تنظیمات';
+    
+    // عنوان جمع در برچسب‌ها
+    protected static ?string $pluralLabel = 'تنظیمات';
+
+    // گروه بندی منو (اختیاری)
+    protected static string|\UnitEnum|null $navigationGroup = 'مدیریت سیستم';
+
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cog-6-tooth';
 
     protected static ?string $recordTitleAttribute = 'key';
+    
 
     public static function form(Schema $schema): Schema
     {
@@ -43,8 +56,18 @@ class SettingResource extends Resource
     {
         return [
             'index' => ListSettings::route('/'),
-            'create' => CreateSetting::route('/create'),
             'edit' => EditSetting::route('/{record}/edit'),
         ];
     }
+
+    public static function canCreate(): bool
+    {
+        return false; // کاربر نمی‌تواند تنظیم جدید بسازد
+    }
+
+    public static function canDelete($record): bool
+    {
+        return false; // کاربر نمی‌تواند تنظیم را حذف کند
+    }
+
 }
