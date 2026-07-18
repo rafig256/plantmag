@@ -21,10 +21,15 @@ class SettingsSeeder extends Seeder
             ['key' => 'currency', 'value' => 'تومان', 'type' => 'string', 'group' => 'general', 'label' => 'واحد پول'],
             ['key' => 'meta_description', 'value' => 'فروشگاه تخصصی گیاهان آپارتمانی', 'type' => 'string', 'group' => 'seo', 'label' => 'توضیحات متا'],
             ['key' => 'footer_text', 'value' => 'همه‌ی گیاهان با بهترین کیفیت', 'type' => 'string', 'group' => 'general', 'label' => 'متن فوتر'],
+            ['key' => 'about_text', 'value' => 'متن درباره ما', 'type' => 'string', 'group' => 'general', 'label' => 'متن درباره ما'],
         ];
 
         foreach ($settings as $setting) {
-            Setting::create($setting);
+            // اگر کلید وجود داشت، به‌روزرسانی کن، در غیر این صورت ایجاد کن
+            Setting::updateOrCreate(
+                ['key' => $setting['key']], // شرط پیدا کردن
+                $setting // داده‌های جدید
+            );
         }
     }
 }

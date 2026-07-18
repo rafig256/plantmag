@@ -1,95 +1,78 @@
 @extends('layouts.app')
 
-@section('title', $plant->name)
+@section('title', $settings['site_name'] ?? 'گلفروشی پاساژ')
 
 @section('content')
-<div class="max-w-4xl mx-auto px-4">
-    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
-        
-        <!-- هدر با تصویر -->
-        <div class="relative h-96 bg-green-100">
-            <img src="{{ asset('storage/' . $plant->featured_image) }}" 
-                 alt="{{ $plant->name }}" 
-                 class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 right-0 p-8">
-                <div class="flex items-end justify-between flex-wrap gap-4">
-                    <div>
-                        <h1 class="text-4xl font-bold text-white">🌿 {{ $plant->name }}</h1>
-                        @if($plant->scientific_name)
-                            <p class="text-green-200 text-xl">{{ $plant->scientific_name }}</p>
-                        @endif
-                    </div>
-                    <div class="flex gap-2">
-                        @if($plant->difficulty)
-                            <span class="bg-yellow-500/90 text-white px-4 py-2 rounded-full text-sm font-bold backdrop-blur-sm">
-                                ⭐ {{ $plant->difficulty }}
-                            </span>
-                        @endif
-                        @if($plant->toxicity)
-                            <span class="bg-red-500/90 text-white px-4 py-2 rounded-full text-sm font-bold backdrop-blur-sm">
-                                ⚠️ {{ $plant->toxicity }}
-                            </span>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- قیمت و وضعیت -->
-        <div class="flex flex-wrap justify-between items-center p-6 border-b">
-            <div class="flex items-center gap-4">
-                <div>
-                    @if($plant->min_price && $plant->max_price)
-                        <span class="text-3xl font-bold text-green-700">
-                            {{ number_format($plant->min_price) }}-{{ number_format($plant->max_price) }}
-                        </span>
-                    @elseif($plant->min_price)
-                        <span class="text-3xl font-bold text-green-700">
-                            از {{ number_format($plant->min_price) }}
-                        </span>
-                    @endif
-                    <span class="text-lg text-gray-600">تومان</span>
-                </div>
-                <span class="bg-green-100 text-green-800 text-sm px-4 py-1.5 rounded-full font-bold">
-                    {{ $plant->is_available ? '✅ موجود' : '❌ ناموجود' }}
-                </span>
-            </div>
-            <div class="flex gap-2 mt-2 sm:mt-0">
-                @if($plant->type)
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">🪴 {{ $plant->type }}</span>
-                @endif
-                <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">🌱 آپارتمانی</span>
-            </div>
-        </div>
-
-        <!-- اطلاعات سریع -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-gray-50 border-b">
-            <div class="text-center info-box">
-                <div class="text-3xl">🌱</div>
-                <div class="font-bold text-sm mt-1 text-gray-700">نوع گیاه</div>
-                <div class="text-sm text-gray-600">{{ $plant->type ?? 'نامشخص' }}</div>
-            </div>
-            <div class="text-center info-box">
-                <div class="text-3xl">⏳</div>
-                <div class="font-bold text-sm mt-1 text-gray-700">طول عمر</div>
-                <div class="text-sm text-gray-600">{{ $plant->growth_type ?? 'نامشخص' }}</div>
-            </div>
-            <div class="text-center info-box">
-                <div class="text-3xl">📏</div>
-                <div class="font-bold text-sm mt-1 text-gray-700">ارتفاع</div>
-                <div class="text-sm text-gray-600">{{ $plant->max_height ?? 'نامشخص' }}</div>
-            </div>
-            <div class="text-center info-box">
-                <div class="text-3xl">🌸</div>
-                <div class="font-bold text-sm mt-1 text-gray-700">گلدهی</div>
-                <div class="text-sm text-gray-600">{{ $plant->flowering_season ?? 'نامشخص' }}</div>
-            </div>
-        </div>
-
-        <!-- ادامه اطلاعات مراقبت، توضیحات، زیست‌شناسی و QR کد -->
-        <!-- ... (بقیه کد مشابه فایل alocasia.html اما با داده‌های داینامیک) ... -->
-
+<div class="max-w-7xl mx-auto px-4">
+    
+    <!-- هدر صفحه اصلی -->
+    <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-green-700">🌿 {{ $settings['shop_name'] ?? 'گلفروشی' }}</h1>
+        <p class="text-gray-600 mt-2">{{ $settings['site_description'] ?? 'انواع گیاهان آپارتمانی و فضای باز' }}</p>
     </div>
+
+    <!-- شبکه گیاهان -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        @forelse($plants as $plant)
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden">
+                <!-- تصویر -->
+                <a href="{{ route('plants.show', $plant->slug) }}">
+                    <div class="h-48 bg-gray-200 overflow-hidden">
+                        @if($plant->featured_image)
+                            <img src="{{ asset('storage/' . $plant->featured_image) }}" 
+                                 alt="{{ $plant->name }}" 
+                                 class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                        @else
+                            <div class="w-full h-full flex items-center justify-center text-gray-400">
+                                <span>بدون تصویر</span>
+                            </div>
+                        @endif
+                    </div>
+                </a>
+
+                <!-- اطلاعات -->
+                <div class="p-4">
+                    <a href="{{ route('plants.show', $plant->slug) }}" class="hover:underline">
+                        <h3 class="text-lg font-bold text-gray-800">{{ $plant->name }}</h3>
+                    </a>
+                    
+                    @if($plant->scientific_name)
+                        <p class="text-sm text-gray-500 italic">{{ $plant->scientific_name }}</p>
+                    @endif
+
+                    <!-- قیمت -->
+                    <div class="mt-2">
+                        @if($plant->min_price && $plant->max_price)
+                            <span class="text-green-700 font-bold">
+                                {{ number_format($plant->min_price) }} - {{ number_format($plant->max_price) }}
+                            </span>
+                        @elseif($plant->min_price)
+                            <span class="text-green-700 font-bold">از {{ number_format($plant->min_price) }}</span>
+                        @else
+                            <span class="text-gray-400 text-sm">قیمت نامشخص</span>
+                        @endif
+                        <span class="text-sm text-gray-500">{{ $settings['currency'] ?? 'تومان' }}</span>
+                    </div>
+
+                    <!-- موجودی -->
+                    <div class="mt-2">
+                        <span class="inline-block px-2 py-1 text-xs rounded-full {{ $plant->is_available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                            {{ $plant->is_available ? '✅ موجود' : '❌ ناموجود' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <div class="col-span-full text-center py-12">
+                <p class="text-gray-500 text-lg">هیچ گیاهی برای نمایش وجود ندارد</p>
+            </div>
+        @endforelse
+    </div>
+
+    <!-- صفحه‌بندی -->
+    <div class="mt-8">
+        {{ $plants->links() }}
+    </div>
+
 </div>
 @endsection

@@ -8,14 +8,14 @@ use App\Models\Setting;
 
 class PlantController extends Controller
 {
-     public function index()
+    public function index()
     {
         $plants = Plant::where('is_available', true)
             ->orderBy('name')
             ->paginate(12);
 
         return view('plants.index', compact('plants'));
-    }
+    }  
 
      public function show($slug)
     {
