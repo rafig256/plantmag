@@ -9,6 +9,9 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Actions\Action;
+
 
 class PlantsTable
 {
@@ -55,6 +58,14 @@ class PlantsTable
                     ->dateTime('Y/m/d H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                ImageColumn::make('qr_code_path')
+                    ->label('QR Code')
+                    ->disk('public')
+                    ->width(50)
+                    ->height(50)
+                    ->square()
+                    ->url(fn ($record) => asset('storage/' . $record->qr_code_path))
+                    ->openUrlInNewTab(),
             ])
 
             ->filters([
@@ -67,6 +78,11 @@ class PlantsTable
 
                 DeleteAction::make()
                     ->label('حذف'),
+
+                Action::make('downloadQr')
+                    ->label('دانلود QR')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->url(fn ($record) => route('plants.download-qr', $record)),
             ])
 
             ->toolbarActions([
