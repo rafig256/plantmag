@@ -10,11 +10,24 @@ class PlantController extends Controller
 {
     public function index()
     {
+        // کوئری اصلی برای صفحه‌بندی (همه گیاهان موجود)
         $plants = Plant::where('is_available', true)
             ->orderBy('name')
             ->paginate(12);
 
-        return view('plants.index', compact('plants'));
+        // کوئری برای اسلایدر گیاهان (تا ۸ عدد، بر اساس جدیدترین)
+        $sliderPlants = Plant::where('is_available', true)
+            ->orderBy('created_at', 'desc')
+            ->take(8)
+            ->get();
+
+        // کوئری برای اسلایدر محبوب‌ترین (تا ۸ عدد، بر اساس بیشترین بازدید)
+        $popularPlants = Plant::where('is_available', true)
+            ->orderBy('views_count', 'desc')
+            ->take(8)
+            ->get();
+
+        return view('plants.index', compact('plants', 'sliderPlants', 'popularPlants'));
     }  
 
      public function show($slug)
