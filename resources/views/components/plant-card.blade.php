@@ -1,4 +1,4 @@
-<div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden h-full">
+<div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden">
     <a href="{{ route('plants.show', $plant->slug) }}">
         <div class="h-48 bg-gray-200 overflow-hidden">
             @if($plant->featured_image)

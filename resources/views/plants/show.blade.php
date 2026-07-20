@@ -43,7 +43,7 @@
         </div>
 
         <!-- ==================== قیمت و وضعیت ==================== -->
-        <div class="flex flex-wrap justify-between items-center p-6 border-b">
+        <div class="flex flex-wrap justify-between items-center p-6">
             <div class="flex items-center gap-4">
                 <div>
                     @if($plant->min_price && $plant->max_price)
@@ -70,7 +70,7 @@
         </div>
 
         <!-- ==================== اطلاعات سریع ==================== -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-gray-50 border-b">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-gray-50 ">
             <div class="text-center info-box">
                 <div class="text-3xl">🌱</div>
                 <div class="font-bold text-sm mt-1 text-gray-700">نوع گیاه</div>
@@ -95,7 +95,7 @@
 
         <!-- ==================== گالری تصاویر ==================== -->
         @if($plant->gallery_images && is_array($plant->gallery_images) && count($plant->gallery_images) > 0)
-        <div class="p-6 border-b">
+        <div class="p-6 ">
             <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
                 <i class="fas fa-images text-green-600 ml-2"></i>
                 گالری تصاویر
@@ -122,7 +122,7 @@
         @endif
 
         <!-- ==================== اطلاعات مراقبت ==================== -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-white border-b">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-white ">
             @if($plant->water)
                 <div class="text-center"><div class="text-3xl">💧</div><div class="font-bold text-sm mt-1 text-gray-700">آبیاری</div><div class="text-sm text-gray-600">{{ $plant->water }}</div></div>
             @endif
@@ -138,7 +138,7 @@
         </div>
 
         <!-- ==================== توضیحات کامل ==================== -->
-        <div class="p-6 space-y-4 border-b">
+        <div class="p-6 space-y-4 ">
             <h2 class="text-2xl font-bold text-gray-800 flex items-center">
                 <i class="fas fa-info-circle text-green-600 ml-2"></i>
                 معرفی
@@ -175,7 +175,7 @@
         </div>
 
         <!-- ==================== دسته‌بندی زیست‌شناسی ==================== -->
-        <div class="p-6 border-b">
+        <div class="p-6 ">
             <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
                 <i class="fas fa-dna text-green-600 ml-2"></i>
                 دسته‌بندی زیست‌شناسی
@@ -208,7 +208,7 @@
 
         <!-- ==================== QR Code ==================== -->
         @if($plant->qr_code_path)
-        <div class="bg-gray-100 p-6 text-center border-b">
+        <div class="bg-gray-100 p-6 text-center">
             <p class="text-sm text-gray-600 mb-2">برای اطلاعات بیشتر اسکن کنید</p>
             <img src="{{ asset('storage/' . $plant->qr_code_path) }}" 
                  alt="QR Code" 

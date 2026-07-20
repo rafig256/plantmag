@@ -10,7 +10,7 @@
             </div>
 
             <!-- منوی دسکتاپ -->
-            <div class="hidden md:flex items-center space-x-8 space-x-reverse">
+            <div class="hidden md:flex items-center gap-8">
                 <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-green-700 border-b-2 border-green-700 pb-1 font-medium' : 'text-gray-600 hover:text-green-700 transition pb-1' }}">
                     صفحه اصلی
                 </a>
