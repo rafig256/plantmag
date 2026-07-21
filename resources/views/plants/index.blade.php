@@ -6,11 +6,18 @@
 <div class="max-w-7xl mx-auto px-4">
     
     <!-- ==================== بنر تصویری ==================== -->
-    <div class="w-full h-64 md:h-80 lg:h-96 rounded-2xl overflow-hidden shadow-lg mb-12">
-        <img src="{{ asset('images/banner.jpg') }}" 
-             alt="بنر گلفروشی" 
+<div class="w-full h-64 md:h-80 lg:h-96 rounded-2xl overflow-hidden shadow-lg mb-12">
+    @if(isset($settings['banner_image']) && $settings['banner_image'] && file_exists(public_path($settings['banner_image'])))
+        <img src="{{ asset($settings['banner_image']) }}" 
+             alt="{{ $settings['banner_alt'] ?? 'بنر گلفروشی' }}" 
              class="w-full h-full object-cover">
-    </div>
+    @else
+        <!-- تصویر پیش‌فرض در صورت نبودن -->
+        <div class="w-full h-full flex items-center justify-center bg-gray-300 text-gray-500">
+            <span>تصویر بنر</span>
+        </div>
+    @endif
+</div>
 
     <!-- ==================== شبکه گیاهان ==================== -->
     <div class="mb-16">
