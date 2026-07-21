@@ -16,12 +16,26 @@ class SettingForm
                 TextInput::make('key')
                     ->required()
                     ->disabled(),
-                Textarea::make('value')
-                    ->default(null)
-                    ->columnSpanFull(),
+                    match ($schema->getRecord()?->type) {
+                        'text' => TextInput::make('value')
+                            ->label('مقدار'),
+                        'textarea' => Textarea::make('value')
+                            ->label('مقدار')
+                            ->columnSpanFull(),
+                        'image' => FileUpload::make('value')
+                            ->label('تصویر')
+                            ->image()
+                            ->disk('public')
+                            ->directory('settings')
+                            ->visibility('public')
+                            ->imageEditor(),
+
+                        default => TextInput::make('value'),
+                    },
                 TextInput::make('type')
                     ->required()
-                    ->default('string'),
+                    ->default('string')
+                    ->disabled(),
                 TextInput::make('group')
                     ->required()
                     ->default('general')
