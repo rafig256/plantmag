@@ -20,11 +20,18 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Navigation\NavigationItem;
 use Illuminate\Support\Facades\URL;
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 
 class AdminPanelProvider extends PanelProvider
 {
-    public function panel(Panel $panel): Panel
+   public function panel(Panel $panel): Panel
     {
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::FOOTER,
+            fn () => view('filament.footer')
+        );
+
         return $panel
             ->default()
             ->id('admin')
@@ -41,7 +48,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 AccountWidget::class,
-                FilamentInfoWidget::class,
+                // \App\Filament\Widgets\PlantCountOverview::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -62,6 +69,6 @@ class AdminPanelProvider extends PanelProvider
                     ->url('/', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-arrow-top-right-on-square')
                     ->group('عمومی')
-        ]);
+            ]);
     }
 }
