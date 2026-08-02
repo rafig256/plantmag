@@ -21,7 +21,7 @@ class Plant extends Model
     'min_price', 'max_price', 'is_available',
     'featured_image', 'gallery_images',
     'qr_code_path', 'qr_code_url', 'views_count',
-    'slug', 'meta_title', 'meta_description', 'meta_keywords'
+    'slug', 'meta_title', 'meta_description', 'meta_keywords','shop_id',
 ];
     protected $casts = [
             'gallery_images' => 'array',
@@ -75,5 +75,16 @@ class Plant extends Model
         static::deleted(function ($plant) {
             $plant->deleteQrCode();
         });
+    }
+    // اضافه کردن رابطه
+    public function shop(): BelongsTo
+    {
+        return $this->belongsTo(Shop::class);
+    }
+
+    // اضافه کردن یک Scope برای فیلتر بر اساس فروشگاه فعلی
+    public function scopeForShop($query, $shopId)
+    {
+        return $query->where('shop_id', $shopId);
     }
 }

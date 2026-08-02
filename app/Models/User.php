@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'shop_id',
     ];
 
     /**
@@ -45,5 +46,16 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // اضافه کردن روابط
+    public function shop(): BelongsTo
+    {
+        return $this->belongsTo(Shop::class);
+    }
+
+    public function ownedShop(): HasOne
+    {
+        return $this->hasOne(Shop::class, 'owner_id');
     }
 }
