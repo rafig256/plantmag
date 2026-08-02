@@ -18,9 +18,17 @@ class ShopResource extends Resource
 {
     protected static ?string $model = Shop::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingStorefront;
+
+    protected static string|\UnitEnum|null $navigationGroup = 'مدیریت فروشگاه‌ها';
+
+    protected static ?string $navigationLabel = 'فروشگاه‌ها';
 
     protected static ?string $recordTitleAttribute = 'name';
+
+protected static ?string $modelLabel = 'فروشگاه';
+
+protected static ?string $pluralModelLabel = 'فروشگاه‌ها';
 
     public static function form(Schema $schema): Schema
     {

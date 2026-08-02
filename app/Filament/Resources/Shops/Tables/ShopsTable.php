@@ -5,9 +5,11 @@ namespace App\Filament\Resources\Shops\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+
 use Filament\Tables\Table;
 
 class ShopsTable
@@ -16,50 +18,73 @@ class ShopsTable
     {
         return $table
             ->columns([
+
                 TextColumn::make('name')
-                    ->searchable(),
+                    ->label('نام فروشگاه')
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('slug')
-                    ->searchable(),
+                    ->label('آدرس')
+                    ->searchable()
+                    ->toggleable(),
+
                 TextColumn::make('phone')
+                    ->label('تلفن')
                     ->searchable(),
-                TextColumn::make('address')
-                    ->searchable(),
-                TextColumn::make('currency')
-                    ->searchable(),
-                ImageColumn::make('banner_image'),
-                TextColumn::make('banner_alt')
-                    ->searchable(),
-                TextColumn::make('meta_description')
-                    ->searchable(),
+
                 TextColumn::make('owner.name')
-                    ->searchable(),
+                    ->label('مدیر فروشگاه')
+                    ->searchable()
+                    ->sortable(),
+
                 IconColumn::make('is_active')
+                    ->label('فعال')
                     ->boolean(),
+
                 TextColumn::make('plant_balance')
+                    ->label('موجودی گیاه')
                     ->numeric()
                     ->sortable(),
+
                 TextColumn::make('last_purchase_at')
-                    ->dateTime()
-                    ->sortable(),
+                    ->label('آخرین خرید')
+                    ->dateTime('Y/m/d H:i')
+                    ->sortable()
+                    ->toggleable(),
+
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('تاریخ ایجاد')
+                    ->dateTime('Y/m/d H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('آخرین تغییر')
+                    ->dateTime('Y/m/d H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
             ])
+
             ->filters([
                 //
             ])
+
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->label('ویرایش'),
             ])
+
             ->toolbarActions([
+
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+
+                    DeleteBulkAction::make()
+                        ->label('حذف انتخابی'),
+
                 ]),
+
             ]);
     }
 }

@@ -13,7 +13,8 @@ class EditShop extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            DeleteAction::make()
+                ->label('حذف فروشگاه'),
         ];
     }
 }
