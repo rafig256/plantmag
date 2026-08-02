@@ -55,4 +55,13 @@ class ShopRequestResource extends Resource
     {
         return auth()->check() && auth()->user()?->role === 'admin';
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        if (auth()->user()?->role === 'admin') {
+            $count = static::getModel()::where('status', 'pending')->count();
+            return $count > 0 ? (string) $count : null;
+        }
+        return null;
+    }
 }
