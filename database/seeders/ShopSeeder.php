@@ -17,9 +17,10 @@ class ShopSeeder extends Seeder
             // پکیج آزمایشی (free) را پیدا کن
             $freePackage = Package::where('slug', 'free')->first();
 
-            $shop = Shop::create([
+        $shop = Shop::updateOrCreate(
+            ['slug' => 'gol-pasaj'],
+            [
                 'name' => 'گلفروشی پاساژ',
-                'slug' => 'gol-pasaj',
                 'phone' => '۰۲۱-۱۲۳۴۵۶۷۸',
                 'address' => 'مشگین شهر، خیابان امام، پاساژ جواهری',
                 'currency' => 'تومان',
@@ -29,8 +30,9 @@ class ShopSeeder extends Seeder
                 'banner_alt' => 'بنر گلفروشی پاساژ',
                 'owner_id' => $user->id,
                 'is_active' => true,
-                'plant_balance' => $freePackage->plant_count ?? 5, // موجودی اولیه
-            ]);
+                'plant_balance' => $freePackage->plant_count ?? 5,
+            ]
+        );
 
             // ثبت تاریخچه خرید
             if ($freePackage) {

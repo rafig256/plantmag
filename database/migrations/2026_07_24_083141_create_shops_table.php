@@ -40,7 +40,10 @@ return new class extends Migration
 
         // اضافه کردن shop_id به جدول users
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('shop_id')->nullable()->constrained('shops')->nullOnDelete();
+            $table->foreignId('shop_id')
+                ->nullable() // مقدار پیش‌فرض NULL
+                ->constrained('shops')
+                ->nullOnDelete();
             $table->enum('role', ['admin', 'manager', 'staff'])->default('staff');
         });
 

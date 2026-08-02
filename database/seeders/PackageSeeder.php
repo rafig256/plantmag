@@ -53,7 +53,11 @@ class PackageSeeder extends Seeder
         ];
 
         foreach ($packages as $package) {
-            Package::create($package);
+            // 🔽 استفاده از updateOrCreate
+            Package::updateOrCreate(
+                ['slug' => $package['slug']], // شرط پیدا کردن رکورد
+                $package // داده‌های جدید
+            );
         }
     }
 }
