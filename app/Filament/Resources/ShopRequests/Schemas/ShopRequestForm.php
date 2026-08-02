@@ -2,11 +2,15 @@
 
 namespace App\Filament\Resources\ShopRequests\Schemas;
 
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
+use App\Models\Package;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Fieldset;
+
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
-use Filament\Schemas\Schema;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\RichEditor;
 
 class ShopRequestForm
 {
@@ -14,41 +18,142 @@ class ShopRequestForm
     {
         return $schema
             ->components([
-                TextInput::make('shop_name')
-                    ->required(),
-                TextInput::make('shop_slug')
-                    ->required(),
-                TextInput::make('phone')
-                    ->tel()
-                    ->default(null),
-                TextInput::make('address')
-                    ->default(null),
-                TextInput::make('currency')
-                    ->required()
-                    ->default('تومان'),
-                Textarea::make('about_text')
-                    ->default(null)
-                    ->columnSpanFull(),
-                FileUpload::make('banner_image')
-                    ->image(),
-                TextInput::make('user_name')
-                    ->required(),
-                TextInput::make('user_email')
-                    ->email()
-                    ->required(),
-                TextInput::make('user_password')
-                    ->password()
-                    ->required(),
-                Select::make('status')
-                    ->options(['pending' => 'Pending', 'approved' => 'Approved', 'rejected' => 'Rejected'])
-                    ->default('pending')
-                    ->required(),
-                Textarea::make('admin_note')
-                    ->default(null)
-                    ->columnSpanFull(),
-                TextInput::make('package_id')
+
+                Section::make('اطلاعات فروشگاه')
+                    ->icon('heroicon-o-building-storefront')
+                    ->collapsible()
+                    ->schema([
+
+                        TextInput::make('shop_name')
+                            ->label('نام فروشگاه')
+                            ->required()
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+
+                        TextInput::make('shop_slug')
+                            ->label('آدرس فروشگاه (Slug)')
+                            ->required()
+                            ->maxLength(255)
+                            ->unique(ignoreRecord: true)
+                            ->columnSpanFull(),
+
+                        TextInput::make('phone')
+                            ->label('تلفن')
+                            ->tel()
+                            ->maxLength(20),
+
+                        TextInput::make('address')
+                            ->label('آدرس')
+                            ->maxLength(500)
+                            ->columnSpanFull(),
+
+                        RichEditor::make('about_text')
+                            ->label('درباره فروشگاه')
+                            ->columnSpanFull(),
+
+                    ])
+                    ->columns(2),
+
+
+                Section::make('اطلاعات مدیر فروشگاه')
+                    ->icon('heroicon-o-user')
+                    ->collapsible()
+                    ->schema([
+
+                        TextInput::make('user_name')
+                            ->label('نام مدیر')
+                            ->required()
+                            ->maxLength(255),
+
+                        TextInput::make('user_email')
+                            ->label('ایمیل')
+                            ->email()
+                            ->required()
+                            ->maxLength(255),
+
+                        TextInput::make('user_password')
+                            ->label('رمز عبور')
+                            ->password()
+                            ->dehydrated(fn ($state) => filled($state))
+                            ->dehydrateStateUsing(
+                                fn ($state) => filled($state) ? bcrypt($state) : null
+                            )
+                            ->columnSpanFull(),
+
+                    ])
+                    ->columns(2),
+
+
+                Section::make('پکیج')
+    ->icon('heroicon-o-credit-card')
+    ->collapsible()
+    ->schema([
+
+        Fieldset::make('انتخاب پکیج')
+            ->schema([
+
+                Select::make('package_id')
+                    ->label('پکیج')
+                    ->relationship('package', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->live()
+                    ->afterStateUpdated(function ($state, callable $set) {
+
+                        $package = Package::find($state);
+
+                        $set('package_name', $package?->name);
+
+                        $set(
+                            'package_plant_count',
+                            $package?->plant_count
+                        );
+                    }),
+
+                TextInput::make('package_name')
+                    ->label('نام پکیج')
+                    ->disabled()
+                    ->dehydrated(false),
+
+                TextInput::make('package_plant_count')
+                    ->label('تعداد گیاهان مجاز')
+                    ->disabled()
                     ->numeric()
-                    ->default(null),
+                    ->dehydrated(false),
+
+            ])
+            ->columns(3)
+            ->columnSpanFull(),
+
+    ]),
+
+
+Section::make('وضعیت درخواست')
+    ->schema([
+
+        Select::make('status')
+            ->label('وضعیت')
+            ->options([
+                'pending' => 'در انتظار',
+                'approved' => 'تأیید شده',
+                'rejected' => 'رد شده',
+            ])
+            ->required()
+            ->default('pending'),
+
+    ]),
+
+
+Section::make('یادداشت ادمین')
+    ->schema([
+
+        Textarea::make('admin_note')
+            ->label('یادداشت داخلی')
+            ->rows(4)
+            ->columnSpanFull(),
+
+    ]),
+
             ]);
     }
 }

@@ -21,7 +21,7 @@ class ShopRequestResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-inbox';
 
     protected static ?string $recordTitleAttribute = 'shop_name';
-    protected static ?string $navigationGroup = 'مدیریت فروشگاه‌ها';
+    protected static string|\UnitEnum|null $navigationGroup = 'مدیریت فروشگاه‌ها';
     protected static ?string $label = 'درخواست فروشگاه';
     protected static ?string $pluralLabel = 'درخواست‌های فروشگاه';
 
