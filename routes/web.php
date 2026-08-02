@@ -5,6 +5,7 @@ use App\Models\Plant;
 use App\Http\Controllers\PlantController;
 use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\ShopRequestController;
 
 
 
@@ -24,4 +25,10 @@ Route::get('/download-qr/{plant}', function (Plant $plant) {
         'plant-' . $plant->id . '-qr.svg'
     );
 })->name('plants.download-qr');
+Route::get('/register-shop', [ShopRequestController::class, 'create'])->name('shop.request.create');
+Route::post('/register-shop', [ShopRequestController::class, 'store'])->name('shop.request.store');
+Route::get('/register-shop/success', [ShopRequestController::class, 'success'])->name('shop.request.success');
+
+
+
 
