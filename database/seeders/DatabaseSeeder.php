@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             PackageSeeder::class,      
             ShopSeeder::class,
             SettingsSeeder::class,
+            PlantSeeder::class,
             ]);
     }
 }

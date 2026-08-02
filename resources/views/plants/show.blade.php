@@ -234,7 +234,9 @@
             <i class="fas fa-chevron-left"></i>
         </button>
         <div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm bg-black/50 px-4 py-2 rounded-full">
-            <span id="lightboxCounter">۱ از {{ count($plant->gallery_images ?? []) }}</span>
+            <span id="lightboxCounter">
+                ۱ از {{ is_array($plant->gallery_images) ? count($plant->gallery_images) : 0 }}
+            </span>
         </div>
     </div>
 </div>
