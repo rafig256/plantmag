@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\Shops\Schemas;
 
-use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
@@ -18,42 +18,58 @@ class ShopForm
         return $schema
             ->components([
 
+                /*
+                |--------------------------------------------------------------------------
+                | اطلاعات اصلی
+                |--------------------------------------------------------------------------
+                */
+
                 Section::make('اطلاعات اصلی فروشگاه')
+                    ->columns(2)
                     ->schema([
 
                         TextInput::make('name')
                             ->label('نام فروشگاه')
-                            ->required(),
+                            ->required()
+                            ->maxLength(255),
 
                         TextInput::make('slug')
                             ->label('آدرس فروشگاه (Slug)')
-                            ->required(),
+                            ->required()
+                            ->unique(ignoreRecord: true),
 
                         TextInput::make('phone')
                             ->label('تلفن')
-                            ->tel(),
+                            ->maxLength(20),
 
                         TextInput::make('address')
                             ->label('آدرس'),
 
                         TextInput::make('currency')
                             ->label('واحد پول')
-                            ->required()
-                            ->default('تومان'),
+                            ->default('تومان')
+                            ->required(),
 
-                    ])
-                    ->columns(2),
+                    ]),
 
+                /*
+                |--------------------------------------------------------------------------
+                | محتوای فروشگاه
+                |--------------------------------------------------------------------------
+                */
 
                 Section::make('محتوای فروشگاه')
+                    ->columns(2)
                     ->schema([
 
                         Textarea::make('about_text')
                             ->label('درباره فروشگاه')
+                            ->rows(5)
                             ->columnSpanFull(),
 
                         Textarea::make('footer_text')
                             ->label('متن فوتر')
+                            ->rows(3)
                             ->columnSpanFull(),
 
                         FileUpload::make('banner_image')
@@ -65,30 +81,52 @@ class ShopForm
                             ->label('متن جایگزین تصویر'),
 
                         TextInput::make('meta_description')
-                            ->label('توضیحات متا'),
+                            ->label('توضیحات متا')
+                            ->columnSpanFull(),
 
-                    ])
-                    ->columns(2),
+                    ]),
 
+                /*
+                |--------------------------------------------------------------------------
+                | مدیریت فروشگاه
+                |--------------------------------------------------------------------------
+                */
 
                 Section::make('مدیریت فروشگاه')
+                    ->columns(2)
                     ->schema([
+
+                        /*
+                         | هنگام ایجاد فروشگاه
+                         */
+
+                        Select::make('owner_id')
+                            ->label('مدیر فروشگاه')
+                            ->relationship('owner', 'name')
+                            ->searchable()
+                            ->required()
+                            ->visibleOn('create'),
+
+                        /*
+                         | هنگام ویرایش
+                         */
 
                         Placeholder::make('owner_name')
                             ->label('مدیر فروشگاه')
-                            ->content(fn ($record) =>
-                                $record?->owner?->name ?? '---'
-                            ),
+                            ->content(fn ($record) => $record?->owner?->name ?? '-')
+                            ->visibleOn('edit'),
 
                         Toggle::make('is_active')
-                            ->label('وضعیت فعالیت')
+                            ->label('فعال')
                             ->default(true),
 
                         TextInput::make('plant_balance')
                             ->label('موجودی گیاه')
                             ->numeric()
+                            ->default(0)
                             ->required()
-                            ->default(0),
+                            ->visibleOn('edit')
+                            ->helperText('تعداد گیاهانی که این فروشگاه مجاز به ثبت آن‌ها است.'),
 
                         Placeholder::make('last_purchase_at')
                             ->label('آخرین خرید')
@@ -96,10 +134,10 @@ class ShopForm
                                 $record?->last_purchase_at
                                     ? $record->last_purchase_at->format('Y/m/d H:i')
                                     : 'هنوز خریدی ثبت نشده است'
-                            ),
+                            )
+                            ->visibleOn('edit'),
 
-                    ])
-                    ->columns(2),
+                    ]),
 
             ]);
     }

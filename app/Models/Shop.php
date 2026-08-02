@@ -11,7 +11,7 @@ class Shop extends Model
     protected $fillable = [
         'name', 'slug', 'phone', 'address', 'currency',
         'about_text', 'footer_text', 'banner_image', 'banner_alt', 'meta_description',
-        'owner_id', 'is_active', 'package_type', 'plant_limit', 'expired_at'
+        'owner_id', 'is_active', 'package_type', 'plant_limit', 'expired_at','plant_balance'
     ];
 
     protected $casts = [
