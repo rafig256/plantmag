@@ -9,6 +9,7 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\Action;
 
 use Filament\Tables\Table;
 
@@ -72,8 +73,20 @@ class ShopsTable
             ])
 
             ->recordActions([
+
                 EditAction::make()
                     ->label('ویرایش'),
+
+                Action::make('assignPackage')
+                    ->label('تخصیص پکیج')
+                    ->icon('heroicon-o-gift')
+                    ->color('success')
+                    ->action(function ($record) {
+
+                        // فعلاً بعداً تکمیل می‌شود
+
+                    }),
+
             ])
 
             ->toolbarActions([

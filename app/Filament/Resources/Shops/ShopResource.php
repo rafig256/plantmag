@@ -26,9 +26,9 @@ class ShopResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-protected static ?string $modelLabel = 'فروشگاه';
+    protected static ?string $modelLabel = 'فروشگاه';
 
-protected static ?string $pluralModelLabel = 'فروشگاه‌ها';
+    protected static ?string $pluralModelLabel = 'فروشگاه‌ها';
 
     public static function form(Schema $schema): Schema
     {
