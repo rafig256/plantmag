@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class ShopResource extends Resource
 {
@@ -54,5 +56,18 @@ class ShopResource extends Resource
             'create' => CreateShop::route('/create'),
             'edit' => EditShop::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            return $query;
+        }
+
+        return $query->whereKey($user->shop_id);
     }
 }

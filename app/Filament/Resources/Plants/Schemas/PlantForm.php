@@ -12,6 +12,8 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Utilities\Get;
+use App\Models\Shop;
+use Filament\Facades\Filament;
 
 class PlantForm
 {
@@ -40,13 +42,14 @@ class PlantForm
                                         $set('slug', str($state)->slug());
                                     })
                                     ->columnSpan(2),
-
                                 Select::make('shop_id')
                                     ->label('فروشگاه')
                                     ->relationship('shop', 'name')
                                     ->searchable()
                                     ->preload()
-                                    ->required(),
+                                    ->required()
+                                    ->visible(fn () => auth()->user()->role === 'admin')
+                                    ->default(fn () => auth()->user()->shop_id),
                                 
                                 TextInput::make('scientific_name')
                                     ->label('نام علمی')
