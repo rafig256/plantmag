@@ -10,8 +10,13 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Actions\Action;
+use App\Models\Package;
+use Filament\Forms\Components\Select;
 
 use Filament\Tables\Table;
+
+use App\Models\ShopPackageHistory;
+
 
 class ShopsTable
 {
@@ -81,9 +86,36 @@ class ShopsTable
                     ->label('تخصیص پکیج')
                     ->icon('heroicon-o-gift')
                     ->color('success')
-                    ->action(function ($record) {
 
-                        // فعلاً بعداً تکمیل می‌شود
+                    ->form([
+
+                        Select::make('package_id')
+                            ->label('پکیج')
+                            ->options(
+                                Package::query()
+                                    ->where('is_active', true)
+                                    ->pluck('name', 'id')
+                            )
+                            ->searchable()
+                            ->required(),
+
+                    ])
+
+                    ->action(function (array $data, $record) {
+
+                        $package = Package::findOrFail($data['package_id']);
+
+                        $record->addPackage(
+                            $package,
+                            paymentMethod: 'manual',
+                            note: 'اختصاص توسط مدیر'
+                        );
+
+                        \Filament\Notifications\Notification::make()
+                            ->title('پکیج ثبت شد')
+                            ->body("پکیج «{$package->name}» به فروشگاه اضافه شد.")
+                            ->success()
+                            ->send();
 
                     }),
 
