@@ -70,4 +70,9 @@ class SettingResource extends Resource
         return false; // کاربر نمی‌تواند تنظیم را حذف کند
     }
 
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->role === 'admin';
+    }
+
 }

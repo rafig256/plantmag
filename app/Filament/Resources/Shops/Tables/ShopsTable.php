@@ -126,8 +126,8 @@ class ShopsTable
                 BulkActionGroup::make([
 
                     DeleteBulkAction::make()
-                        ->label('حذف انتخابی'),
-
+                        ->label('حذف انتخابی')
+                        ->visible(fn () => auth()->user()?->role === 'admin'),
                 ]),
 
             ]);

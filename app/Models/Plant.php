@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Shop;
+use Filament\Notifications\Notification;
+use Illuminate\Validation\ValidationException;
 
 class Plant extends Model
 {
@@ -14,16 +17,16 @@ class Plant extends Model
     use HasFactory;
     
     protected $fillable = [
-    'name', 'scientific_name', 'family', 'genus', 'order_name', 'class_name', 'origin', 'type',
-    'water', 'light', 'temperature', 'humidity', 'soil', 'fertilizer', 'repotting', 'pruning', 'propagation',
-    'growth_type', 'max_height', 'flowering_season', 'leaf_type', 'leaf_color', 'flower_color',
-    'toxicity', 'difficulty',
-    'description', 'short_description',
-    'min_price', 'max_price', 'is_available',
-    'featured_image', 'gallery_images',
-    'qr_code_path', 'qr_code_url', 'views_count',
-    'slug', 'meta_title', 'meta_description', 'meta_keywords','shop_id',
-];
+        'name', 'scientific_name', 'family', 'genus', 'order_name', 'class_name', 'origin', 'type',
+        'water', 'light', 'temperature', 'humidity', 'soil', 'fertilizer', 'repotting', 'pruning', 'propagation',
+        'growth_type', 'max_height', 'flowering_season', 'leaf_type', 'leaf_color', 'flower_color',
+        'toxicity', 'difficulty',
+        'description', 'short_description',
+        'min_price', 'max_price', 'is_available',
+        'featured_image', 'gallery_images',
+        'qr_code_path', 'qr_code_url', 'views_count',
+        'slug', 'meta_title', 'meta_description', 'meta_keywords','shop_id',
+    ];
     protected $casts = [
         'gallery_images' => 'array',
         'min_price' => 'integer',
@@ -65,6 +68,27 @@ class Plant extends Model
 
     protected static function booted()
     {
+        static::creating(function ($plant) {
+
+            $shop = Shop::findOrFail($plant->shop_id);
+
+            if ($shop->plant_balance <= 0) {
+
+                Notification::make()
+                    ->title('اعتبار کافی نیست')
+                    ->body('موجودی ثبت گیاه این فروشگاه به پایان رسیده است.')
+                    ->danger()
+                    ->send();
+
+                throw ValidationException::withMessages([
+                    'shop_id' => 'ابتدا باید یک پکیج برای این فروشگاه ثبت شود.',
+                ]);
+            }
+
+            $shop->decrement('plant_balance');
+
+        });
+
         static::created(function ($plant) {
             $plant->generateQrCode();
         });
@@ -77,7 +101,10 @@ class Plant extends Model
         });
 
         static::deleted(function ($plant) {
+
             $plant->deleteQrCode();
+            $plant->shop?->increment('plant_balance');
+
         });
     }
     // اضافه کردن رابطه

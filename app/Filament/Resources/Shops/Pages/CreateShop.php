@@ -8,4 +8,11 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateShop extends CreateRecord
 {
     protected static string $resource = ShopResource::class;
+
+    protected function afterCreate(): void
+    {
+        $this->record->owner()->update([
+            'shop_id' => $this->record->id,
+        ]);
+    }
 }

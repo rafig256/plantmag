@@ -14,7 +14,8 @@ class EditShop extends EditRecord
     {
         return [
             DeleteAction::make()
-                ->label('حذف فروشگاه'),
+                ->label('حذف فروشگاه')
+                ->visible(fn () => auth()->user()?->role === 'admin'),
         ];
     }
 }
