@@ -217,6 +217,16 @@
         </div>
         @endif
 
+        @if($plant->shop)
+            <p class="text-sm text-gray-500">
+                <i class="fas fa-store ml-1"></i>
+                فروشگاه: 
+                <a href="{{ route('shop.index', $plant->shop->slug) }}" class="text-green-600 hover:underline">
+                    {{ $plant->shop->name }}
+                </a>
+            </p>
+        @endif
+
     </div>
 </div>
 

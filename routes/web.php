@@ -29,6 +29,14 @@ Route::get('/register-shop', [ShopRequestController::class, 'create'])->name('sh
 Route::post('/register-shop', [ShopRequestController::class, 'store'])->name('shop.request.store');
 Route::get('/register-shop/success', [ShopRequestController::class, 'success'])->name('shop.request.success');
 
+// shop
+use App\Http\Controllers\ShopController;
+
+// صفحه اصلی فروشگاه (لیست گیاهان)
+Route::get('/gol/{shop_slug}', [ShopController::class, 'index'])->name('shop.index');
+// صفحه درباره ما فروشگاه
+Route::get('/gol/{shop_slug}/about', [ShopController::class, 'about'])->name('shop.about');
+
 
 
 
