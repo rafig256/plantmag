@@ -70,4 +70,19 @@ class ShopResource extends Resource
 
         return $query->whereKey($user->shop_id);
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()?->role !== 'staff';
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()?->role === 'admin';
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()?->role === 'admin';
+    }
 }
