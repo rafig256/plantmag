@@ -40,6 +40,13 @@ class PlantForm
                                         $set('slug', str($state)->slug());
                                     })
                                     ->columnSpan(2),
+
+                                Select::make('shop_id')
+                                    ->label('فروشگاه')
+                                    ->relationship('shop', 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->required(),
                                 
                                 TextInput::make('scientific_name')
                                     ->label('نام علمی')

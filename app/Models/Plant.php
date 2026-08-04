@@ -25,9 +25,12 @@ class Plant extends Model
     'slug', 'meta_title', 'meta_description', 'meta_keywords','shop_id',
 ];
     protected $casts = [
-            'gallery_images' => 'array',
+        'gallery_images' => 'array',
+        'min_price' => 'integer',
+        'max_price' => 'integer',
+        'views_count' => 'integer',
+        'is_available' => 'boolean',
     ];
-
     public function generateQrCode(): void
     {
         // تولید لینک کامل صفحه گیاه
