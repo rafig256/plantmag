@@ -86,7 +86,6 @@ class ShopsTable
                     ->label('تخصیص پکیج')
                     ->icon('heroicon-o-gift')
                     ->color('success')
-
                     ->form([
 
                         Select::make('package_id')
@@ -100,6 +99,7 @@ class ShopsTable
                             ->required(),
 
                     ])
+                    ->visible(fn () => auth()->user()?->role === 'admin')
 
                     ->action(function (array $data, $record) {
 
