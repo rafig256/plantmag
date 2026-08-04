@@ -38,4 +38,16 @@ class ShopController extends Controller
 
         return view('shop.about', compact('shop'));
     }
+
+    /**
+     * نمایش لیست همه فروشگاه‌ها
+     */
+    public function indexAll()
+    {
+        $shops = Shop::where('is_active', true)
+            ->orderBy('name')
+            ->paginate(12);
+
+        return view('shop.index-all', compact('shops'));
+    }
 }

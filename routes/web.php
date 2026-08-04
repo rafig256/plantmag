@@ -36,6 +36,8 @@ use App\Http\Controllers\ShopController;
 Route::get('/gol/{shop_slug}', [ShopController::class, 'index'])->name('shop.index');
 // صفحه درباره ما فروشگاه
 Route::get('/gol/{shop_slug}/about', [ShopController::class, 'about'])->name('shop.about');
+// صفحه لیست همه فروشگاه‌ها
+Route::get('/shops', [ShopController::class, 'indexAll'])->name('shops.index');
 
 
 
