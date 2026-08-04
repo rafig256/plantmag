@@ -2,10 +2,11 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
-use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Hash;
 
 class UserForm
 {
@@ -13,23 +14,59 @@ class UserForm
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->required(),
-                TextInput::make('email')
-                    ->label('Email address')
-                    ->email()
-                    ->required(),
-                DateTimePicker::make('email_verified_at'),
-                TextInput::make('password')
-                    ->password()
-                    ->required(),
-                TextInput::make('shop_id')
-                    ->numeric()
-                    ->default(null),
-                Select::make('role')
-                    ->options(['admin' => 'Admin', 'manager' => 'Manager', 'staff' => 'Staff'])
-                    ->default('staff')
-                    ->required(),
+
+                Section::make('اطلاعات کاربر')
+                    ->schema([
+
+                        TextInput::make('name')
+                            ->label('نام')
+                            ->required()
+                            ->maxLength(255),
+
+                        TextInput::make('email')
+                            ->label('ایمیل')
+                            ->email()
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->maxLength(255),
+
+                        TextInput::make('password')
+                            ->label('رمز عبور')
+                            ->password()
+                            ->required(fn (string $operation): bool => $operation === 'create')
+                            ->dehydrated(fn ($state) => filled($state))
+                            ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null)
+                            ->helperText('در ویرایش، برای حفظ رمز عبور فعلی این قسمت را خالی بگذارید.'),
+
+                    ])
+                    ->columns(2),
+
+                Section::make('دسترسی')
+                    ->schema([
+
+                        Select::make('role')
+                            ->label('نقش')
+                            ->options([
+                                'admin' => 'مدیر کل',
+                                'manager' => 'مدیر فروشگاه',
+                                'staff' => 'کارمند',
+                            ])
+                            ->required()
+                            ->default('staff')
+                            ->native(false),
+
+                        Select::make('shop_id')
+                            ->label('فروشگاه')
+                            ->relationship('shop', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->placeholder('بدون فروشگاه')
+                            ->helperText('برای مدیران فروشگاه و کارمندان استفاده می‌شود.')
+                            ->native(false),
+
+                    ])
+                    ->columns(2),
+
             ]);
     }
 }

@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Users\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -14,38 +16,72 @@ class UsersTable
     {
         return $table
             ->columns([
+
                 TextColumn::make('name')
-                    ->searchable(),
+                    ->label('نام')
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('email')
-                    ->label('Email address')
+                    ->label('ایمیل')
                     ->searchable(),
-                TextColumn::make('email_verified_at')
-                    ->dateTime()
+
+                TextColumn::make('shop.name')
+                    ->label('فروشگاه')
+                    ->placeholder('—')
+                    ->searchable()
                     ->sortable(),
+
+                BadgeColumn::make('role')
+                    ->label('نقش')
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'admin' => 'مدیر کل',
+                        'manager' => 'مدیر فروشگاه',
+                        'staff' => 'کارمند',
+                        default => $state,
+                    })
+                    ->colors([
+                        'danger' => 'admin',
+                        'warning' => 'manager',
+                        'success' => 'staff',
+                    ]),
+
+                IconColumn::make('email_verified_at')
+                    ->label('ایمیل تأیید شده')
+                    ->boolean(fn ($record) => $record->email_verified_at !== null),
+
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('تاریخ عضویت')
+                    ->dateTime('Y/m/d H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('آخرین ویرایش')
+                    ->dateTime('Y/m/d H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('shop_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('role')
-                    ->badge(),
+
             ])
+
             ->filters([
                 //
             ])
+
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->label('ویرایش'),
             ])
+
             ->toolbarActions([
+
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+
+                    DeleteBulkAction::make()
+                        ->label('حذف انتخابی'),
+
                 ]),
+
             ]);
     }
 }

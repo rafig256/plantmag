@@ -18,9 +18,15 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?string $label = 'کاربر';
+
+    protected static ?string $pluralLabel = 'کاربران';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'مدیریت کاربران';
 
     public static function form(Schema $schema): Schema
     {
@@ -46,5 +52,17 @@ class UserResource extends Resource
             'create' => CreateUser::route('/create'),
             'edit' => EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->check() && auth()->user()?->role === 'admin';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return auth()->user()?->role === 'admin'
+            ? (string) static::getModel()::count()
+            : null;
     }
 }
