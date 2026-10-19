@@ -28,3 +28,4 @@ Thumbs.db
 "*.log" 
 "/storage/*.key" 
 "/public/storage" 
+/storage/framework/lsp-*.php
