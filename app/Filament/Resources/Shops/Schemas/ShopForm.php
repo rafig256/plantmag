@@ -104,7 +104,7 @@ class ShopForm
 
                 Section::make('مدیریت فروشگاه')
                     ->columns(2)
-                    ->visible(fn () => auth()->user()?->role === 'admin')
+                    ->visible(fn () => \Illuminate\Support\Facades\Auth::user()?->role === 'admin')
                     ->schema([
 
                         /*

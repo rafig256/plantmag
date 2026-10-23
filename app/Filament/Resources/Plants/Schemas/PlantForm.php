@@ -261,7 +261,7 @@ class PlantForm
                                     ->minValue(0)
                                     ->integer()
                                     ->prefix('تومان')
-                                    ->placeholder('مثلاً: ۱۰۰۰۰۰')
+                                    ->placeholder('مثلاً: 100000')
                                     ->maxValue(99999999),
                                 
                                 TextInput::make('max_price')
@@ -270,7 +270,7 @@ class PlantForm
                                     ->numeric()
                                     ->minValue(0)
                                     ->prefix('تومان')
-                                    ->placeholder('مثلاً: ۵۰۰۰۰۰')
+                                    ->placeholder('مثلاً: 500000')
                                     ->maxValue(99999999),
                                 
                                 Toggle::make('is_available')

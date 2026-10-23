@@ -34,5 +34,13 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    
+    'kilo' => [
+        'base_url' => env('KILO_BASE_URL', 'https://api.kilo.ai/api/gateway'),
+        'model' => env('KILO_MODEL', 'kilo-auto/free'),
+        'api_key' => env('KILO_API_KEY'),
+        'timeout' => (int) env('KILO_TIMEOUT', 45),
+    ],
+
 
 ];
