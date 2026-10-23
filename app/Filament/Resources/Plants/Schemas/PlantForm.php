@@ -12,6 +12,10 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification;
+use App\Services\PlantAiService;
 use App\Models\Shop;
 use Filament\Facades\Filament;
 
@@ -41,6 +45,48 @@ class PlantForm
 
                                         $set('slug', str($state)->slug());
                                     })
+                                    ->suffixAction(
+                                        Action::make('aiSuggest')
+                                            ->label('جستجو با هوش مصنوعی')
+                                            ->icon('heroicon-o-sparkles')
+                                            ->action(function (Get $get, Set $set) {
+                                                $name = (string) $get('name');
+
+                                                if (blank($name)) {
+                                                    Notification::make()
+                                                        ->title('نام گیاه را وارد کنید')
+                                                        ->danger()
+                                                        ->send();
+
+                                                    return;
+                                                }
+
+                                                try {
+                                                    $result = app(PlantAiService::class)->suggest($name);
+                                                    $data = $result['data'] ?? [];
+
+                                                    foreach (['scientific_name', 'family', 'order_name', 'leaf_color', 'max_height'] as $field) {
+                                                        if (array_key_exists($field, $data) && filled($data[$field])) {
+                                                            $set($field, $data[$field]);
+                                                        }
+                                                    }
+
+                                                    $source = ($result['source'] ?? null) === 'database' ? 'پایگاه داده' : 'هوش مصنوعی';
+
+                                                    Notification::make()
+                                                        ->title('اطلاعات با موفقیت تکمیل شد')
+                                                        ->body("منبع: {$source}")
+                                                        ->success()
+                                                        ->send();
+                                                } catch (\Throwable $e) {
+                                                    Notification::make()
+                                                        ->title('خطا در دریافت اطلاعات')
+                                                        ->body('امکان دریافت اطلاعات وجود ندارد. لطفاً دوباره تلاش کنید.')
+                                                        ->danger()
+                                                        ->send();
+                                                }
+                                            })
+                                    )
                                     ->columnSpan(2),
                                 Select::make('shop_id')
                                     ->label('فروشگاه')
