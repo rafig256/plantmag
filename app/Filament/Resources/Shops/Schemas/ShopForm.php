@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Shops\Schemas;
 
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Placeholder;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -50,10 +50,10 @@ class ShopForm
                             ->default('تومان')
                             ->required(),
 
-Placeholder::make('shop_page_link')
-                            ->label('')
+                        TextEntry::make('shop_page_link')
+                            ->label('لینک به فروشگاه')
                             ->visibleOn('edit')
-                            ->content(fn ($record) =>
+                            ->state(fn ($record) =>
                                 $record && $record->slug
                                     ? '<a href="' . route('shop.index', ['shop_slug' => $record->slug]) . '" target="_blank" class="inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition">مشاهده صفحه فروشگاه</a>'
                                     : ''
@@ -122,9 +122,9 @@ Placeholder::make('shop_page_link')
                          | هنگام ویرایش
                          */
 
-                        Placeholder::make('owner_name')
+                        TextEntry::make('owner_name')
                             ->label('مدیر فروشگاه')
-                            ->content(fn ($record) => $record?->owner?->name ?? '-')
+                            ->state(fn ($record) => $record?->owner?->name ?? '-')
                             ->visibleOn('edit'),
 
                         Toggle::make('is_active')
@@ -139,15 +139,14 @@ Placeholder::make('shop_page_link')
                             ->visibleOn('edit')
                             ->helperText('تعداد گیاهانی که این فروشگاه مجاز به ثبت آن‌ها است.'),
 
-                        Placeholder::make('last_purchase_at')
+                        TextEntry::make('last_purchase_at')
                             ->label('آخرین خرید')
-                            ->content(fn ($record) =>
+                            ->state(fn ($record) =>
                                 $record?->last_purchase_at
                                     ? $record->last_purchase_at->format('Y/m/d H:i')
                                     : 'هنوز خریدی ثبت نشده است'
                             )
                             ->visibleOn('edit'),
-
                     ]),
 
             ]);
