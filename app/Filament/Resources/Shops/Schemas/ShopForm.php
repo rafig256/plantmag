@@ -50,6 +50,16 @@ class ShopForm
                             ->default('تومان')
                             ->required(),
 
+Placeholder::make('shop_page_link')
+                            ->label('')
+                            ->visibleOn('edit')
+                            ->content(fn ($record) =>
+                                $record && $record->slug
+                                    ? '<a href="' . route('shop.index', ['shop_slug' => $record->slug]) . '" target="_blank" class="inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition">مشاهده صفحه فروشگاه</a>'
+                                    : ''
+                            )
+                            ->html(),
+
                     ]),
 
                 /*
