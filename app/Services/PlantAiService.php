@@ -76,12 +76,15 @@ You provide preliminary plant information for a plant shop.
 Return only valid JSON. Do not use Markdown or code fences.
 Use these exact keys:
 scientific_name, family, order, leaf_color,
-max_height_indoor_m, max_height_natural_m.
+max_height_indoor_m, max_height_natural_m, type, growth_type, flowering_season.
 Use numbers for heights and null if unknown.
 The order field must be the botanical taxonomic order,
 not the plant's growth habit.
-Return leaf_color in Persian using one of these values when applicable:
-سبز تیره، سبز روشن، ارغوانی، ابلق، طلایی.
+For select-like fields use exactly one of these allowed values or null:
+type: علیف, درختچه, کاکتوس, گلدار, ساکولنت
+growth_type: چندساله, یکساله, دوساله
+flowering_season: بهار, تابستان, پاییز, زمستان, همیشه
+
 PROMPT,
                     ],
                     [
@@ -126,6 +129,9 @@ PROMPT,
             'max_height' => is_numeric($height)
                 ? (string) ($height * 100)
                 : null,
+            'type' => $data['order'] ?? null,
+            'growth_type' => $data['growth_type'] ?? null,
+            'flowering_season' =>$data['flowering_season'] ?? null,
         ];
     }
 }

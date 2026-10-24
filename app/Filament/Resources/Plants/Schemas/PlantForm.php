@@ -65,7 +65,16 @@ class PlantForm
                                                     $result = app(PlantAiService::class)->suggest($name);
                                                     $data = $result['data'] ?? [];
 
-                                                    foreach (['scientific_name', 'family', 'order_name', 'leaf_color', 'max_height'] as $field) {
+                                                    foreach ([
+                                                        'scientific_name',
+                                                        'family',
+                                                        'order_name',
+                                                        'leaf_color',
+                                                        'max_height'
+                                                        ,'type'
+                                                        ,'growth_type',
+                                                        'flowering_season',
+                                                        ] as $field) {
                                                         if (array_key_exists($field, $data) && filled($data[$field])) {
                                                             $set($field, $data[$field]);
                                                         }
