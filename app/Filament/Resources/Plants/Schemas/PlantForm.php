@@ -79,6 +79,11 @@ class PlantForm
                                                         'class_name',
                                                         'origin',
                                                         'difficulty',
+                                                        'water',
+                                                        'light',
+                                                        'temperature',
+                                                        'humidity',
+                                                        'soil',
                                                         ] as $field) {
                                                         if (array_key_exists($field, $data) && filled($data[$field])) {
                                                             $set($field, $data[$field]);

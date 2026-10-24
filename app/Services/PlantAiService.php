@@ -72,20 +72,21 @@ class PlantAiService
                     [
                         'role' => 'system',
                         'content' => <<<'PROMPT'
-You provide preliminary plant information for a plant shop.
-Return only valid JSON. Do not use Markdown or code fences.
-Use these exact keys:
-scientific_name, family, order, leaf_color, max_height_indoor_m, max_height_natural_m, type, growth_type, flowering_season, flower_color,genus , class_name, origin , difficulty.
-Use numbers for heights and null if unknown.
-The order field must be the botanical taxonomic order,
-not the plant's growth habit.
-For select-like fields use exactly one of these allowed values or null:
-type: علیف, درختچه, کاکتوس, گلدار, ساکولنت
-growth_type: چندساله, یکساله, دوساله
-flowering_season: بهار, تابستان, پاییز, زمستان, همیشه
-flower_color: سفید، صورتی، زرد، نارنجی، قرمز، آبی
-difficulty: آسان، متوسط، سخت
-PROMPT,
+                        You provide preliminary plant information for a plant shop.
+                        Return only valid JSON. Do not use Markdown or code fences.
+                        Use these exact keys:
+                        scientific_name, family, order, leaf_color, max_height_indoor_m, max_height_natural_m, type, growth_type, flowering_season, flower_color,genus , class_name, origin , difficulty, water,light, temperature, humidity, soil.
+                        Use numbers for heights and null if unknown.
+                        The order field must be the botanical taxonomic order,not the plant's growth habit.
+                        Plant Water Requirements and Proper Irrigation Methods. Light Requirements and Optimal Lighting Conditions.
+                        temperature: Suitable storage temperature range. humidity: Appropriate humidity of the environment. soil: The type of soil and characteristics of suitable cultivation bed.
+                        For select-like fields use exactly one of these allowed values or null:
+                        type: علیف, درختچه, کاکتوس, گلدار, ساکولنت
+                        growth_type: چندساله, یکساله, دوساله
+                        flowering_season: بهار, تابستان, پاییز, زمستان, همیشه
+                        flower_color: سفید، صورتی، زرد، نارنجی، قرمز، آبی
+                        difficulty: آسان، متوسط، سخت
+                        PROMPT,
                     ],
                     [
                         'role' => 'user',
@@ -137,6 +138,11 @@ PROMPT,
             'class_name' =>$data['class_name'] ?? null,
             'origin' =>$data['origin'] ?? null,
             'difficulty' =>$data['difficulty'] ?? null,
+            'water' => $data['water'] ?? null,
+            'light'=>$data['light'] ?? null,
+            'temperature' => $data['temperature'] ?? null,
+            'humidity' => $data['humidity'] ?? null,
+            'soil' => $data['soil'] ?? null,
         ];
     }
 }
