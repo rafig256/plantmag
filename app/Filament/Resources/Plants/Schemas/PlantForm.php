@@ -70,10 +70,15 @@ class PlantForm
                                                         'family',
                                                         'order_name',
                                                         'leaf_color',
-                                                        'max_height'
-                                                        ,'type'
-                                                        ,'growth_type',
+                                                        'max_height',
+                                                        'type',
+                                                        'growth_type',
                                                         'flowering_season',
+                                                        'flower_color',
+                                                        'genus',
+                                                        'class_name',
+                                                        'origin',
+                                                        'difficulty',
                                                         ] as $field) {
                                                         if (array_key_exists($field, $data) && filled($data[$field])) {
                                                             $set($field, $data[$field]);
