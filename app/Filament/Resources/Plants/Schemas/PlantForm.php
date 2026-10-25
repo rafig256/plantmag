@@ -49,6 +49,19 @@ class PlantForm
                                         Action::make('aiSuggest')
                                             ->label('جستجو با هوش مصنوعی')
                                             ->icon('heroicon-o-sparkles')
+                                            ->visible(function () {
+                                                $user = auth()->user();
+                                                if (! $user) {
+                                                    return false;
+                                                }
+                                                if ($user->role === 'admin') {
+                                                    return true;
+                                                }
+                                                $shop = $user->shop ?: $user->ownedShop;
+                                                $latest = $shop?->packageHistories()->latest('created_at')->first();
+                                                $package = $latest?->package;
+                                                return (bool) ($package?->is_active && $package?->has_ai);
+                                            })
                                             ->action(function (Get $get, Set $set) {
                                                 $name = (string) $get('name');
 

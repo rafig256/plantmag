@@ -19,6 +19,16 @@ class PlantAiService
             throw new RuntimeException('نام گیاه وارد نشده است.');
         }
 
+        $user = auth()->user();
+        if (! $user || $user->role !== 'admin') {
+            $shop = $user?->shop ?: $user?->ownedShop;
+            $latestHistory = $shop?->packageHistories()->latest('created_at')->first();
+            $package = $latestHistory?->package;
+            if (! $package || ! $package->is_active || ! $package->has_ai) {
+                throw new RuntimeException('امکان استفاده از هوش مصنوعی برای این فروشگاه فعال نیست.');
+            }
+        }
+
         // 1. جست‌وجوی نام فارسی یا نام علمی در دیتابیس
         $plant = Plant::query()
             ->where('name', $plantName)
