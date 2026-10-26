@@ -68,11 +68,28 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            
             ->navigationItems([
                 NavigationItem::make('مشاهده سایت')
                     ->url('/', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-arrow-top-right-on-square')
-                    ->group('عمومی')
+                    ->group('عمومی'),
+
+                NavigationItem::make('فروشگاه من')
+                    ->url(
+                        fn () => auth()->user()?->shop
+                            ? route('shop.index', [
+                                'shop_slug' => auth()->user()->shop->slug,
+                            ])
+                            : '#',
+                        shouldOpenInNewTab: true
+                    )
+                    ->icon('heroicon-o-building-storefront')
+                    ->visible(fn () => auth()->check()
+                        && auth()->user()->role !== 'admin'
+                        && auth()->user()->shop !== null
+                    )
+                    ->group('عمومی'),
             ]);
     }
 }
