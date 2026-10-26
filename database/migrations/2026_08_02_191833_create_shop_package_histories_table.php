@@ -27,8 +27,9 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
+
     public function down(): void
     {
-        Schema::dropIfExists('shop_package_histories');
+        Schema::dropIfExists('shop_package_history');
     }
 };
