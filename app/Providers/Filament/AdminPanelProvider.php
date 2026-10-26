@@ -31,6 +31,10 @@ class AdminPanelProvider extends PanelProvider
             PanelsRenderHook::FOOTER,
             fn () => view('filament.footer')
         );
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::TOPBAR_END,
+            fn () => view('filament.plant-balance')
+        );
 
         return $panel
             ->default()
