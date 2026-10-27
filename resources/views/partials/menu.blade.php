@@ -23,7 +23,24 @@
                 <a href="{{ route('shop.request.create') }}" class="block text-gray-600 hover:text-green-700 py-2">
                     <i class="fas fa-store ml-2"></i>ثبت‌نام فروشگاه
                 </a>
+                @guest
+                    <a href="{{ route('filament.admin.auth.login') }}"
+                    class="text-gray-600 hover:text-green-700 transition pb-1">
+                        ورود
+                    </a>
 
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}"
+                        class="text-gray-600 hover:text-green-700 transition pb-1">
+                            ثبت‌نام
+                        </a>
+                    @endif
+                @else
+                    <a href="{{ url('/admin') }}"
+                    class="text-gray-600 hover:text-green-700 transition pb-1">
+                        پنل مدیریت
+                    </a>
+                @endguest
             </div>
             
 
@@ -51,6 +68,7 @@
             <a href="{{ route('shop.request.create') }}" class="block text-gray-600 hover:text-green-700 py-2">
                 <i class="fas fa-store ml-2"></i>ثبت‌نام فروشگاه
             </a>
+
         </div>
     </div>
 </nav>
